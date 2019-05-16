@@ -37,8 +37,8 @@ cube.list \
 all: cube.elf secondary-outputs
 
 # Tool invocations
-cube.elf: $(OBJS) $(USER_OBJS) C:\Users\computer\STM32CubeIDE\workspace_1.0.0\cube\STM32F407VGTX_FLASH.ld
-	arm-none-eabi-gcc -o "cube.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\computer\STM32CubeIDE\workspace_1.0.0\cube\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="cube.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+cube.elf: $(OBJS) $(USER_OBJS) C:\Users\computer\Desktop\cube_stm32\cube\STM32F407VGTX_FLASH.ld
+	arm-none-eabi-gcc -o "cube.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\computer\Desktop\cube_stm32\cube\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="cube.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

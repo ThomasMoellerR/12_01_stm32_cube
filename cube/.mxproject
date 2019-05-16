@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/computer/STM32CubeIDE/workspace_1.0.0/cube/Inc
+HeaderPath=C:/Users/computer/Desktop/cube_stm32/cube/Inc
 HeaderFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;
-SourcePath=C:/Users/computer/STM32CubeIDE/workspace_1.0.0/cube/Src
+SourcePath=C:/Users/computer/Desktop/cube_stm32/cube/Src
 SourceFiles=stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]
