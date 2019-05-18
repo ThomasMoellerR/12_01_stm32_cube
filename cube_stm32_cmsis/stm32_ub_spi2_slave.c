@@ -80,6 +80,46 @@ SPI2_SDEV_t SPI2DEV = {
 //  -> ERROR   , wenn SPI schon mit anderem Mode initialisiert
 //  -> SUCCESS , wenn SPI init ok war
 //--------------------------------------------------------------
+
+
+
+
+void Configure_SPI_DMA(void)
+{
+	  // DMA
+	  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
+	  DMA_DeInit(DMA1_Stream3);
+	  DMA_InitTypeDef DMA_InitStructure;
+	  DMA_StructInit(&DMA_InitStructure);
+	  DMA_InitStructure.DMA_BufferSize = SPI2_DMA_BUF_SIZE ;
+	  DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable ;
+	  DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_1QuarterFull ;
+	  DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single ;
+	  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
+	  DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
+	  DMA_InitStructure.DMA_PeripheralBaseAddr =(uint32_t) (&(SPI2->DR)) ;        // Peripherie
+	  DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
+	  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
+	  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+
+	  // RX
+	  DMA_InitStructure.DMA_Channel = DMA_Channel_0 ;
+	  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory ;
+	  DMA_InitStructure.DMA_Memory0BaseAddr =(uint32_t)SPI2_RxBuf;					 // Speicher
+	  DMA_Init(DMA1_Stream3, &DMA_InitStructure);
+
+	  DMA_ITConfig(DMA1_Stream3, DMA_IT_TC, ENABLE);
+
+	  SPI_I2S_DMACmd(SPI2, SPI_I2S_DMAReq_Rx, ENABLE);
+
+	  DMA_Cmd(DMA1_Stream3,ENABLE);
+
+
+}
+
+
 ErrorStatus UB_SPI2_Slave_Init(SPI2_SMode_t mode)
 {
 
@@ -184,36 +224,9 @@ ErrorStatus UB_SPI2_Slave_Init(SPI2_SMode_t mode)
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 
-  // DMA
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE);
-  DMA_DeInit(DMA1_Stream3);
-  DMA_InitTypeDef DMA_InitStructure;
-  DMA_StructInit(&DMA_InitStructure);
-  DMA_InitStructure.DMA_BufferSize = SPI2_DMA_BUF_SIZE ;
-  DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable ;
-  DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_1QuarterFull ;
-  DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single ;
-  DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-  DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
-  DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
-  DMA_InitStructure.DMA_PeripheralBaseAddr =(uint32_t) (&(SPI2->DR)) ;        // Peripherie
-  DMA_InitStructure.DMA_PeripheralBurst = DMA_PeripheralBurst_Single;
-  DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
-  DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-  DMA_InitStructure.DMA_Priority = DMA_Priority_High;
 
-  // RX
-  DMA_InitStructure.DMA_Channel = DMA_Channel_0 ;
-  DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory ;
-  DMA_InitStructure.DMA_Memory0BaseAddr =(uint32_t)SPI2_RxBuf;					 // Speicher
-  DMA_Init(DMA1_Stream3, &DMA_InitStructure);
 
-  DMA_ITConfig(DMA1_Stream3, DMA_IT_TC, ENABLE);
-
-  SPI_I2S_DMACmd(SPI2, SPI_I2S_DMAReq_Rx, ENABLE);
-
-  DMA_Cmd(DMA1_Stream3,ENABLE);
-
+  Configure_SPI_DMA();
 
   return(0);
 }

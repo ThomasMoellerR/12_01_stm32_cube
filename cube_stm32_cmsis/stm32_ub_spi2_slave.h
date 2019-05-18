@@ -107,6 +107,8 @@ typedef enum {
 //--------------------------------------------------------------
 ErrorStatus UB_SPI2_Slave_Init(SPI2_SMode_t mode);
 
+extern void Configure_SPI_DMA(void);
+
 
 
 #define  SPI2_DMA_BUF_SIZE   5184

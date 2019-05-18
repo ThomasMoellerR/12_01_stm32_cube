@@ -92,7 +92,7 @@ void UB_Ext_INT0_Init(void)
 //--------------------------------------------------------------
 void P_EXT_INT0_LoFlanke(void)
 {
-  // hier eigenen Code eintragen
+
 
 }
 
@@ -104,10 +104,7 @@ void P_EXT_INT0_LoFlanke(void)
 //--------------------------------------------------------------
 void P_EXT_INT0_HiFlanke(void)
 {
-  // hier eigenen Code eintragen
-
-	//u8SPI_State_Machine = 0;
-	//reconfigure_DMA(u8SPI_State_Machine);
+	Configure_SPI_DMA();
 }
 
 
